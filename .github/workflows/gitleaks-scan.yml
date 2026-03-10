@@ -1,15 +1,13 @@
 name: Gitleaks Secret Scan
 
 on:
-  workflow_call:      # Permite ser usado como workflow reutilizável
-  pull_request:       # OBRIGATÓRIO para funcionar em Rulesets de PR
-  pull_request_target: # Recomendado para garantir o disparo em diferentes cenários
+  workflow_call:
+  pull_request:
 
 jobs:
   gitleaks:
     name: Scan for secrets
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,16 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        id: gitleaks
         uses: gitleaks/gitleaks-action@v2
-        # Nota: Se o .gitleaks.toml estiver no repo 'devops-shared', 
-        # a action tentará buscá-lo no repo que está sendo escaneado.
-        # Se não existir lá, ela usará o padrão dela.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Fail if secrets found
-        if: failure()
-        run: |
-          echo "::error::Gitleaks detected secrets in the repository. Please review and remove them before merging."
-          exit 1
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }} # Referencia o secret da Org
