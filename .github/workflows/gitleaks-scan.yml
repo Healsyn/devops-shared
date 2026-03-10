@@ -1,7 +1,9 @@
 name: Gitleaks Secret Scan
 
 on:
-  workflow_call:
+  workflow_call:      # Permite ser usado como workflow reutilizável
+  pull_request:       # OBRIGATÓRIO para funcionar em Rulesets de PR
+  pull_request_target: # Recomendado para garantir o disparo em diferentes cenários
 
 jobs:
   gitleaks:
@@ -17,8 +19,9 @@ jobs:
       - name: Run Gitleaks
         id: gitleaks
         uses: gitleaks/gitleaks-action@v2
-        with:
-          config-path: .gitleaks.toml
+        # Nota: Se o .gitleaks.toml estiver no repo 'devops-shared', 
+        # a action tentará buscá-lo no repo que está sendo escaneado.
+        # Se não existir lá, ela usará o padrão dela.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
