@@ -1,0 +1,21 @@
+title = "Gitleaks Base Configuration"
+
+[allowlist]
+  description = "Ignore common paths that generate false positives"
+  paths = [
+    # Test files and directories
+    '''tests/''',
+    '''test/''',
+    '''spec/''',
+    '''__tests__/''',
+    '''.*_test\.(go|py|rb|js|ts)$''',
+    '''.*\.test\.(js|ts|jsx|tsx)$''',
+    '''.*\.spec\.(js|ts|jsx|tsx)$''',
+
+    # Translation and localisation files
+    '''locale/''',
+    '''locales/''',
+    '''i18n/''',
+    '''.*\.po$''',
+    '''.*\.pot$''',
+  ]
